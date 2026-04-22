@@ -1,9 +1,6 @@
 import express from 'express';
 import cors from 'cors';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { mkdirSync } from 'fs';
-import Database from 'better-sqlite3';
+import pool from './db/client.js';
 import productsRouter from './routes/products.js';
 import categoriesRouter from './routes/categories.js';
 import articlesRouter from './routes/articles.js';
@@ -12,17 +9,6 @@ import ordersRouter from './routes/orders.js';
 import { createTables } from './db/schema.js';
 import { seedData } from './db/seed.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const dataDir = join(__dirname, 'data');
-mkdirSync(dataDir, { recursive: true });
-
-const db = new Database(join(dataDir, 'xuongrong.db'));
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
-
-createTables(db);
-seedData(db);
-
 const app = express();
 app.use(cors({
   origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : '*',
@@ -30,13 +16,25 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.use('/api/products', productsRouter(db));
-app.use('/api/categories', categoriesRouter(db));
-app.use('/api/articles', articlesRouter(db));
-app.use('/api/contacts', contactsRouter(db));
-app.use('/api/orders', ordersRouter(db));
+app.use('/api/products', productsRouter(pool));
+app.use('/api/categories', categoriesRouter(pool));
+app.use('/api/articles', articlesRouter(pool));
+app.use('/api/contacts', contactsRouter(pool));
+app.use('/api/orders', ordersRouter(pool));
 
 const PORT = process.env.PORT || 5013;
-app.listen(PORT, () => {
-  console.log(`🌿 Server chạy tại http://localhost:${PORT}`);
-});
+
+async function start() {
+  try {
+    await createTables(pool);
+    await seedData(pool);
+    app.listen(PORT, () => {
+      console.log(`🌿 Server chạy tại http://localhost:${PORT}`);
+    });
+  } catch (err) {
+    console.error('❌ Lỗi khởi động server:', err);
+    process.exit(1);
+  }
+}
+
+start();

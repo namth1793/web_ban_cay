@@ -24,7 +24,10 @@ createTables(db);
 seedData(db);
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: process.env.FRONTEND_URL ? process.env.FRONTEND_URL.split(',') : '*',
+  credentials: true,
+}));
 app.use(express.json());
 
 app.use('/api/products', productsRouter(db));
@@ -33,7 +36,7 @@ app.use('/api/articles', articlesRouter(db));
 app.use('/api/contacts', contactsRouter(db));
 app.use('/api/orders', ordersRouter(db));
 
-const PORT = 5013;
+const PORT = process.env.PORT || 5013;
 app.listen(PORT, () => {
-  console.log(`🌵 Server chạy tại http://localhost:${PORT}`);
+  console.log(`🌿 Server chạy tại http://localhost:${PORT}`);
 });

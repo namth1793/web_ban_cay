@@ -33,12 +33,9 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-wide">Danh Mục</h4>
             <ul className="space-y-2">
               {[
-                ['🌿 Cây Cảnh Trong Nhà', '/san-pham?category=cay-canh-trong-nha'],
-                ['🌸 Cây Hoa & Cây Ra Hoa', '/san-pham?category=cay-hoa-ra-hoa'],
-                ['🌵 Xương Rồng & Sen Đá', '/san-pham?category=xuong-rong-sen-da'],
-                ['🌱 Thảo Mộc & Rau Sạch', '/san-pham?category=cay-thao-moc-rau-sach'],
-                ['🎋 Bonsai & Tiểu Cảnh', '/san-pham?category=cay-bonsai-tieu-canh'],
-                ['🎁 Quà Tặng Cây Mini', '/san-pham?category=qua-tang-cay-mini'],
+                ['🌵 Xương Rồng Mini', '/san-pham?category=xuong-rong-mini'],
+                ['🌿 Xương Rồng Decor', '/san-pham?category=xuong-rong-decor'],
+                ['🌸 Các Loại Cây Khác', '/san-pham?category=cay-khac'],
               ].map(([label, to]) => (
                 <li key={to}>
                   <Link to={to} className="text-sm text-gray-400 hover:text-primary-400 transition-colors">{label}</Link>

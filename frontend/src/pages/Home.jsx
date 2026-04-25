@@ -7,19 +7,15 @@ import Toast from '../components/Toast';
 import { api } from '../api';
 
 const categories = [
-  { label: 'Cây Cảnh Trong Nhà', slug: 'cay-canh-trong-nha', emoji: '🌿', color: 'from-emerald-500 to-teal-600', desc: 'Monstera, Pothos, Lưỡi Hổ...' },
-  { label: 'Cây Hoa & Cây Ra Hoa', slug: 'cay-hoa-ra-hoa', emoji: '🌸', color: 'from-pink-400 to-rose-600', desc: 'Lan, Hồng, Cẩm Tú Cầu...' },
-  { label: 'Xương Rồng & Sen Đá', slug: 'xuong-rong-sen-da', emoji: '🌵', color: 'from-green-500 to-lime-600', desc: 'Sen đá, Xương rồng, Agave...' },
-  { label: 'Cây Thảo Mộc & Rau Sạch', slug: 'cay-thao-moc-rau-sach', emoji: '🌱', color: 'from-lime-500 to-green-600', desc: 'Rau thơm, Lô hội, Sả...' },
-  { label: 'Cây Bonsai & Tiểu Cảnh', slug: 'cay-bonsai-tieu-canh', emoji: '🎋', color: 'from-teal-500 to-cyan-600', desc: 'Bonsai nghệ thuật, Terrarium...' },
-  { label: 'Quà Tặng Cây Mini', slug: 'qua-tang-cay-mini', emoji: '🎁', color: 'from-amber-500 to-orange-500', desc: 'Combo quà tặng đẹp...' },
+  { label: 'Xương Rồng Mini', slug: 'xuong-rong-mini', emoji: '🌵', color: 'from-green-500 to-emerald-600', desc: 'Sen đá, cầu vàng, haworthia...' },
+  { label: 'Xương Rồng Decor', slug: 'xuong-rong-decor', emoji: '🌿', color: 'from-teal-600 to-green-700', desc: 'Cereus, Euphorbia, Agave...' },
+  { label: 'Các Loại Cây Khác', slug: 'cay-khac', emoji: '🌸', color: 'from-lime-500 to-green-600', desc: 'Cây trong nhà, hoa, bonsai...' },
 ];
 
 const productSections = [
-  { title: 'CÂY CẢNH TRONG NHÀ', category: 'cay-canh-trong-nha' },
-  { title: 'CÂY HOA & CÂY RA HOA', category: 'cay-hoa-ra-hoa' },
-  { title: 'XƯƠNG RỒNG & SEN ĐÁ', category: 'xuong-rong-sen-da' },
-  { title: 'BONSAI & TIỂU CẢNH', category: 'cay-bonsai-tieu-canh' },
+  { title: 'XƯƠNG RỒNG MINI', category: 'xuong-rong-mini' },
+  { title: 'XƯƠNG RỒNG DECOR', category: 'xuong-rong-decor' },
+  { title: 'CÁC LOẠI CÂY KHÁC', category: 'cay-khac' },
 ];
 
 function ProductSection({ title, category, onAddToCart }) {
@@ -70,7 +66,7 @@ export default function Home() {
           </div>
           <div className="flex gap-4 text-primary-100 text-xs">
             <span>✅ Giao hàng toàn quốc</span>
-            <span>✅ Cây chất lượng cao</span>
+            <span>✅ Xương rồng chất lượng</span>
             <span>✅ Hỗ trợ chăm sóc miễn phí</span>
           </div>
         </div>
@@ -80,14 +76,14 @@ export default function Home() {
       <section className="py-10 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="section-title mb-8">DANH MỤC SẢN PHẨM</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {categories.map(c => (
               <Link key={c.slug} to={`/san-pham?category=${c.slug}`}
                 className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className={`bg-gradient-to-br ${c.color} p-5 h-full flex flex-col items-center justify-center text-white text-center min-h-[130px]`}>
-                  <span className="text-4xl mb-2 group-hover:scale-110 transition-transform duration-300">{c.emoji}</span>
-                  <p className="font-bold text-xs leading-tight mb-1">{c.label}</p>
-                  <p className="text-white/70 text-[10px] hidden sm:block">{c.desc}</p>
+                <div className={`bg-gradient-to-br ${c.color} p-8 h-full flex flex-col items-center justify-center text-white text-center min-h-[160px]`}>
+                  <span className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">{c.emoji}</span>
+                  <p className="font-bold text-lg leading-tight mb-1">{c.label}</p>
+                  <p className="text-white/80 text-sm">{c.desc}</p>
                 </div>
               </Link>
             ))}
@@ -100,7 +96,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 py-5">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             {[
-              ['🌱', 'Cây Chất Lượng', 'Tuyển chọn từ vườn ươm đạt chuẩn'],
+              ['🌵', 'Cây Chất Lượng', 'Tuyển chọn từ vườn ươm đạt chuẩn'],
               ['🚚', 'Giao Hàng Nhanh', 'Toàn quốc trong 1-3 ngày'],
               ['🎁', 'Đóng Gói Đẹp', 'An toàn, cẩn thận từng cây'],
               ['💬', 'Tư Vấn 24/7', 'Hỗ trợ chăm sóc cây miễn phí'],
@@ -119,34 +115,6 @@ export default function Home() {
       {productSections.map(s => (
         <ProductSection key={s.category} title={s.title} category={s.category} onAddToCart={handleAdd} />
       ))}
-
-      {/* Rau sạch banner */}
-      <div className="bg-gradient-to-r from-lime-700 to-green-600 py-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-6 text-white">
-          <div className="text-6xl">🌱</div>
-          <div className="flex-1">
-            <h3 className="text-2xl font-extrabold">Tự Trồng Rau Sạch Tại Nhà</h3>
-            <p className="text-lime-100 mt-1">Rau thơm, thảo mộc hữu cơ. Trồng ban công, cửa sổ - thu hoạch mỗi ngày cho bữa ăn gia đình.</p>
-          </div>
-          <Link to="/san-pham?category=cay-thao-moc-rau-sach" className="bg-white text-green-700 font-bold px-8 py-3 rounded-full hover:bg-green-50 transition-colors flex-shrink-0 whitespace-nowrap">
-            Xem Rau Sạch
-          </Link>
-        </div>
-      </div>
-
-      {/* Gift banner */}
-      <div className="bg-gradient-to-r from-amber-600 to-orange-500 py-12">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center gap-6 text-white">
-          <div className="text-6xl">🎁</div>
-          <div className="flex-1">
-            <h3 className="text-2xl font-extrabold">Quà Tặng Cây Xanh Ý Nghĩa</h3>
-            <p className="text-amber-100 mt-1">Combo cây mini đóng gói đẹp, kèm thiệp và hướng dẫn chăm sóc. Thích hợp tặng sinh nhật, khai trương, tốt nghiệp.</p>
-          </div>
-          <Link to="/san-pham?category=qua-tang-cay-mini" className="bg-white text-amber-700 font-bold px-8 py-3 rounded-full hover:bg-amber-50 transition-colors flex-shrink-0 whitespace-nowrap">
-            Xem Quà Tặng
-          </Link>
-        </div>
-      </div>
 
       {/* Blog */}
       {articles.length > 0 && (

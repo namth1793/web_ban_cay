@@ -1,7 +1,7 @@
-export async function createTables(pool) {
-  await pool.query(`
+export function createTables(db) {
+  db.exec(`
     CREATE TABLE IF NOT EXISTS categories (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       slug TEXT UNIQUE NOT NULL,
       description TEXT,
@@ -10,7 +10,7 @@ export async function createTables(pool) {
     );
 
     CREATE TABLE IF NOT EXISTS products (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       category_id INTEGER REFERENCES categories(id),
       name TEXT NOT NULL,
       slug TEXT UNIQUE NOT NULL,
@@ -22,11 +22,11 @@ export async function createTables(pool) {
       stock INTEGER DEFAULT 100,
       featured INTEGER DEFAULT 0,
       sold INTEGER DEFAULT 0,
-      created_at TIMESTAMP DEFAULT NOW()
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS articles (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       type TEXT NOT NULL,
       title TEXT NOT NULL,
       slug TEXT UNIQUE NOT NULL,
@@ -34,36 +34,52 @@ export async function createTables(pool) {
       content TEXT,
       image TEXT,
       views INTEGER DEFAULT 0,
-      created_at TIMESTAMP DEFAULT NOW()
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS contacts (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       email TEXT,
       phone TEXT,
       message TEXT,
-      created_at TIMESTAMP DEFAULT NOW()
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS orders (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       customer_name TEXT NOT NULL,
       phone TEXT NOT NULL,
       address TEXT NOT NULL,
       note TEXT,
       total INTEGER NOT NULL,
       status TEXT DEFAULT 'pending',
-      created_at TIMESTAMP DEFAULT NOW()
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
 
     CREATE TABLE IF NOT EXISTS order_items (
-      id SERIAL PRIMARY KEY,
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
       order_id INTEGER REFERENCES orders(id),
-      product_id INTEGER REFERENCES products(id),
+      product_id INTEGER,
       product_name TEXT NOT NULL,
       quantity INTEGER NOT NULL,
       price INTEGER NOT NULL
+    );
+
+    CREATE TABLE IF NOT EXISTS article_reactions (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      article_id INTEGER REFERENCES articles(id),
+      session_id TEXT NOT NULL,
+      reaction_type TEXT NOT NULL,
+      UNIQUE(article_id, session_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS article_comments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      article_id INTEGER REFERENCES articles(id),
+      author_name TEXT NOT NULL,
+      content TEXT NOT NULL,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     );
   `);
 }

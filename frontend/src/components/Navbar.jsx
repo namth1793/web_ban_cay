@@ -8,12 +8,9 @@ const navItems = [
     label: 'Sản Phẩm',
     to: '/san-pham',
     sub: [
-      { label: '🌿 Cây Cảnh Trong Nhà', to: '/san-pham?category=cay-canh-trong-nha' },
-      { label: '🌸 Cây Hoa & Cây Ra Hoa', to: '/san-pham?category=cay-hoa-ra-hoa' },
-      { label: '🌵 Xương Rồng & Sen Đá', to: '/san-pham?category=xuong-rong-sen-da' },
-      { label: '🌱 Cây Thảo Mộc & Rau Sạch', to: '/san-pham?category=cay-thao-moc-rau-sach' },
-      { label: '🎋 Cây Bonsai & Tiểu Cảnh', to: '/san-pham?category=cay-bonsai-tieu-canh' },
-      { label: '🎁 Quà Tặng Cây Mini', to: '/san-pham?category=qua-tang-cay-mini' },
+      { label: '🌵 Xương Rồng Mini', to: '/san-pham?category=xuong-rong-mini' },
+      { label: '🌿 Xương Rồng Decor', to: '/san-pham?category=xuong-rong-decor' },
+      { label: '🌸 Các Loại Cây Khác', to: '/san-pham?category=cay-khac' },
     ]
   },
   { label: 'Chăm Sóc', to: '/cham-soc' },

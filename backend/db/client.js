@@ -61,11 +61,35 @@ async function createSqliteAdapter() {
   const __dirname = dirname(__filename);
   const dataDir = join(__dirname, '../data');
   mkdirSync(dataDir, { recursive: true });
-  const db = new Database(join(dataDir, 'xuongrong.db'));
-  db.pragma('journal_mode = WAL');
-  db.pragma('foreign_keys = ON');
-  db.type = 'sqlite';
-  return db;
+  const rawDb = new Database(join(dataDir, 'xuongrong.db'));
+  rawDb.pragma('journal_mode = WAL');
+  rawDb.pragma('foreign_keys = ON');
+
+  const makeTx = (db) => ({
+    all: (sql, params = []) => Promise.resolve(db.prepare(sql).all(...params)),
+    get: (sql, params = []) => Promise.resolve(db.prepare(sql).get(...params)),
+    run: (sql, params = []) => {
+      const r = db.prepare(sql).run(...params);
+      return Promise.resolve({ lastId: r.lastInsertRowid, changes: r.changes });
+    },
+  });
+
+  return {
+    type: 'sqlite',
+    ...makeTx(rawDb),
+    exec: (sql) => { rawDb.exec(sql); return Promise.resolve(); },
+    transaction: async (fn) => {
+      rawDb.prepare('BEGIN').run();
+      try {
+        const result = await fn(makeTx(rawDb));
+        rawDb.prepare('COMMIT').run();
+        return result;
+      } catch (e) {
+        rawDb.prepare('ROLLBACK').run();
+        throw e;
+      }
+    },
+  };
 }
 
 const db = await (process.env.DATABASE_URL ? createPgAdapter() : createSqliteAdapter());

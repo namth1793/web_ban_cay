@@ -13,8 +13,8 @@ const app = express();
 app.use(cors({ origin: '*' }));
 app.use(express.json());
 
-createTables(db);
-seedData(db);
+await createTables(db);
+await seedData(db);
 
 app.use('/api/products', productsRouter(db));
 app.use('/api/categories', categoriesRouter(db));
@@ -22,5 +22,5 @@ app.use('/api/articles', articlesRouter(db));
 app.use('/api/contacts', contactsRouter(db));
 app.use('/api/orders', ordersRouter(db));
 
-const PORT = 5013;
+const PORT = process.env.PORT || 5013;
 app.listen(PORT, () => console.log(`🌿 Server chạy tại http://localhost:${PORT}`));

@@ -40,10 +40,8 @@ export default function LienHe() {
 
           <div className="space-y-5">
             {[
-              { icon: '📍', label: 'Địa chỉ', value: '1062 Đỗ Mười, Phường Linh Xuân, TP.HCM', href: null },
-              { icon: '📞', label: 'Cửa hàng', value: '0979.840.050', href: 'tel:0979840050' },
-              { icon: '📞', label: 'Vườn ươm', value: '0337.123.030', href: 'tel:0337123030' },
-              { icon: '✉️', label: 'Email', value: 'sendanonglam.hcm@gmail.com', href: 'mailto:sendanonglam.hcm@gmail.com' },
+              { icon: '📍', label: 'Địa chỉ', value: 'Phường Long Phước, TP. Hồ Chí Minh (Quận 9 cũ)', href: null },
+              { icon: '📞', label: 'Điện thoại', value: '096.1144.560', href: 'tel:0961144560' },
             ].map(item => (
               <div key={item.label} className="flex gap-4">
                 <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
@@ -61,21 +59,9 @@ export default function LienHe() {
             ))}
           </div>
 
-          <div className="mt-8 bg-primary-50 border border-primary-100 rounded-2xl p-6">
-            <h3 className="font-bold text-primary-800 mb-3">Giờ Làm Việc</h3>
-            <div className="space-y-2 text-sm text-gray-600">
-              <div className="flex justify-between"><span>Thứ 2 - Thứ 6</span><span className="font-semibold">8:00 - 18:00</span></div>
-              <div className="flex justify-between"><span>Thứ 7</span><span className="font-semibold">8:00 - 17:00</span></div>
-              <div className="flex justify-between"><span>Chủ nhật</span><span className="font-semibold text-primary-600">8:00 - 12:00</span></div>
-            </div>
-          </div>
-
           <div className="mt-6 flex gap-3">
-            <a href="https://zalo.me/0979840050" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
+            <a href="https://zalo.me/0961144560" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
               💬 Chat Zalo
-            </a>
-            <a href="https://facebook.com" className="flex items-center gap-2 bg-blue-700 hover:bg-blue-800 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
-              💬 Messenger
             </a>
           </div>
         </div>

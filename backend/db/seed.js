@@ -19,6 +19,16 @@ const imgs = {
 };
 
 export async function seedData(db) {
+  // Seed hero banners independently (run even if other data already exists)
+  const bannerCount = await db.get('SELECT COUNT(*) as c FROM hero_banners');
+  if (Number(bannerCount.c) === 0) {
+    const B = 'INSERT INTO hero_banners (title,description,tag,image,link,cta_text,bg_gradient,sort_order) VALUES (?,?,?,?,?,?,?,?)';
+    await db.run(B, ['Xương Rồng Mini Dễ Thương', 'Sen đá, cầu vàng, haworthia, lithops... hàng trăm loại xương rồng mini xinh xắn cho bàn làm việc và nội thất.', 'Xương Rồng Mini', 'https://images.unsplash.com/photo-1530530488516-02af946f86fb?w=900&h=500&fit=crop&auto=format', '/san-pham?category=xuong-rong-mini', 'Xem Xương Rồng Mini', 'from-primary-900 via-primary-800 to-teal-700', 1]);
+    await db.run(B, ['Điểm Nhấn Trang Trí Không Gian', 'Cereus, Euphorbia, Agave, Yucca... Xương rồng kích thước lớn tạo điểm nhấn độc đáo cho phòng khách và sân vườn.', 'Xương Rồng Decor', 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=900&h=500&fit=crop&auto=format', '/san-pham?category=xuong-rong-decor', 'Xem Xương Rồng Decor', 'from-emerald-900 via-green-800 to-teal-700', 2]);
+    await db.run(B, ['Xanh Hóa Không Gian Sống', 'Monstera, lan hồ điệp, bonsai, rau thơm... Đa dạng cây cảnh cho mọi không gian và nhu cầu trang trí.', 'Các Loại Cây Khác', 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=900&h=500&fit=crop&auto=format', '/san-pham?category=cay-khac', 'Khám Phá Ngay', 'from-lime-900 via-green-800 to-emerald-700', 3]);
+    await db.run(B, ['Quà Tặng Ý Nghĩa & Độc Đáo', 'Combo cây mini đóng gói đẹp, kèm thiệp và hướng dẫn chăm sóc. Thích hợp tặng sinh nhật, khai trương, tốt nghiệp.', 'Quà Tặng Cây Xanh', 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=900&h=500&fit=crop&auto=format', '/san-pham?category=cay-khac', 'Xem Quà Tặng', 'from-teal-900 via-green-800 to-primary-700', 4]);
+  }
+
   const count = await db.get('SELECT COUNT(*) as c FROM categories');
   if (Number(count.c) > 0) return;
 

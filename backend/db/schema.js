@@ -18,7 +18,7 @@ export async function createTables(db) {
     `CREATE TABLE IF NOT EXISTS articles (
       id ${AI}, type TEXT NOT NULL, title TEXT NOT NULL,
       slug TEXT UNIQUE NOT NULL, summary TEXT, content TEXT,
-      image TEXT, views INTEGER DEFAULT 0,
+      image TEXT, author TEXT, views INTEGER DEFAULT 0,
       created_at ${TS} DEFAULT CURRENT_TIMESTAMP
     )`,
     `CREATE TABLE IF NOT EXISTS contacts (
@@ -48,9 +48,22 @@ export async function createTables(db) {
       author_name TEXT NOT NULL, content TEXT NOT NULL,
       created_at ${TS} DEFAULT CURRENT_TIMESTAMP
     )`,
+    `CREATE TABLE IF NOT EXISTS hero_banners (
+      id ${AI}, title TEXT NOT NULL, description TEXT,
+      tag TEXT, image TEXT NOT NULL,
+      link TEXT DEFAULT '/san-pham',
+      cta_text TEXT DEFAULT 'Xem ngay',
+      bg_gradient TEXT DEFAULT 'from-primary-900 via-primary-800 to-teal-700',
+      sort_order INTEGER DEFAULT 0,
+      active INTEGER DEFAULT 1,
+      created_at ${TS} DEFAULT CURRENT_TIMESTAMP
+    )`,
   ];
 
   for (const sql of tables) {
     await db.exec(sql);
   }
+
+  // Migration: add author column to articles for existing databases
+  try { await db.exec('ALTER TABLE articles ADD COLUMN author TEXT'); } catch {}
 }

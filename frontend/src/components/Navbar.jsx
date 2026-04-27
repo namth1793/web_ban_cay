@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo.jpg';
 import { useCart } from '../context/CartContext';
 
 const navItems = [
@@ -46,33 +47,26 @@ export default function Navbar() {
       <div className="bg-primary-800 text-white text-xs py-1.5">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <a href="tel:0979840050" className="flex items-center gap-1 hover:text-primary-200 transition-colors">
-              <span>📞</span> 0979.840.050
-            </a>
-            <a href="tel:0337123030" className="hidden sm:flex items-center gap-1 hover:text-primary-200 transition-colors">
-              <span>📞</span> 0337.123.030
+            <a href="tel:0961144560" className="flex items-center gap-1 hover:text-primary-200 transition-colors">
+              <span>📞</span> 096.1144.560
             </a>
           </div>
           <div className="flex items-center gap-3 text-primary-100">
             <span className="hidden md:inline">✅ Giao hàng toàn quốc</span>
             <span className="hidden md:inline text-primary-600">|</span>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
+            <a href="https://www.tiktok.com/@vuon.trenmay" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
             <span className="text-primary-600">|</span>
-            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
+            <a href="https://zalo.me/0961144560" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Zalo</a>
           </div>
         </div>
       </div>
 
       {/* Main navbar */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center gap-4">
+        <div className="max-w-7xl mx-auto px-4 flex items-center gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 flex-shrink-0">
-            <span className="text-4xl leading-none">🌿</span>
-            <div>
-              <div className="font-extrabold text-primary-700 text-lg leading-tight">Cây Cảnh</div>
-              <div className="text-xs text-gray-500 font-medium">Nông Lâm</div>
-            </div>
+          <Link to="/" className="flex items-center flex-shrink-0">
+            <img src={logo} alt="Xương Rồng Trên Mây" className="h-20 w-auto" />
           </Link>
 
           {/* Search */}
@@ -92,8 +86,8 @@ export default function Navbar() {
           </form>
 
           <div className="ml-auto flex items-center gap-3">
-            <a href="tel:0979840050" className="hidden lg:flex items-center gap-2 bg-primary-50 border border-primary-200 text-primary-700 rounded-full px-4 py-2 text-sm font-semibold hover:bg-primary-100 transition-colors">
-              <span>📞</span> 0979.840.050
+            <a href="tel:0961144560" className="hidden lg:flex items-center gap-2 bg-primary-50 border border-primary-200 text-primary-700 rounded-full px-4 py-2 text-sm font-semibold hover:bg-primary-100 transition-colors">
+              <span>📞</span> 096.1144.560
             </a>
             <Link to="/gio-hang" className="relative flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full px-4 py-2 text-sm font-semibold transition-colors">
               <span>🛒</span>

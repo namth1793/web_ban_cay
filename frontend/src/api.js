@@ -15,6 +15,8 @@ export const api = {
   submitContact: (data) => fetch(`${BASE}/contacts`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
   createOrder: (data) => fetch(`${BASE}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
 
+  getBanners: () => fetch(`${BASE}/banners`).then(r => r.json()),
+
   // Reactions
   getReactions: (articleId, sessionId) =>
     fetch(`${BASE}/articles/${articleId}/reactions?session_id=${sessionId}`).then(r => r.json()),

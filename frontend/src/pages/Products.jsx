@@ -10,6 +10,7 @@ export default function Products() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(false);
+  const [sortBy, setSortBy] = useState('default');
 
   const category = searchParams.get('category') || '';
   const search = searchParams.get('search') || '';
@@ -31,6 +32,14 @@ export default function Products() {
     p.delete('search');
     setSearchParams(p);
   };
+
+  const sortedProducts = [...products].sort((a, b) => {
+    if (sortBy === 'price-asc') return a.price - b.price;
+    if (sortBy === 'price-desc') return b.price - a.price;
+    if (sortBy === 'name-asc') return a.name.localeCompare(b.name, 'vi');
+    if (sortBy === 'name-desc') return b.name.localeCompare(a.name, 'vi');
+    return 0;
+  });
 
   const activeCategory = categories.find(c => c.slug === category);
 
@@ -71,11 +80,24 @@ export default function Products() {
 
         {/* Products */}
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
             <h1 className="font-bold text-xl text-gray-800">
               {activeCategory?.name || (search ? `Tìm kiếm: "${search}"` : 'Tất Cả Sản Phẩm')}
             </h1>
-            <span className="text-sm text-gray-500">{products.length} sản phẩm</span>
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-gray-500">{products.length} sản phẩm</span>
+              <select
+                value={sortBy}
+                onChange={e => setSortBy(e.target.value)}
+                className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm text-gray-700 focus:outline-none focus:border-primary-500 bg-white"
+              >
+                <option value="default">Mặc định</option>
+                <option value="price-asc">Giá tăng dần</option>
+                <option value="price-desc">Giá giảm dần</option>
+                <option value="name-asc">Tên A → Z</option>
+                <option value="name-desc">Tên Z → A</option>
+              </select>
+            </div>
           </div>
 
           {loading ? (
@@ -92,7 +114,7 @@ export default function Products() {
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {products.map(p => <ProductCard key={p.id} product={p} onAddToCart={() => setToast(true)} />)}
+              {sortedProducts.map(p => <ProductCard key={p.id} product={p} onAddToCart={() => setToast(true)} />)}
             </div>
           )}
         </div>

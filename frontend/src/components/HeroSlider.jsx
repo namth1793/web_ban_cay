@@ -1,56 +1,41 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-const slides = [
-  {
-    id: 1,
-    tag: 'Xương Rồng Mini',
-    title: 'Xương Rồng Mini Dễ Thương',
-    desc: 'Sen đá, cầu vàng, haworthia, lithops... hàng trăm loại xương rồng mini xinh xắn cho bàn làm việc và nội thất.',
-    bg: 'from-primary-900 via-primary-800 to-teal-700',
-    img: 'https://images.unsplash.com/photo-1530530488516-02af946f86fb?w=900&h=500&fit=crop&auto=format',
-    link: '/san-pham?category=xuong-rong-mini',
-    cta: 'Xem Xương Rồng Mini',
-  },
-  {
-    id: 2,
-    tag: 'Xương Rồng Decor',
-    title: 'Điểm Nhấn Trang Trí Không Gian',
-    desc: 'Cereus, Euphorbia, Agave, Yucca... Xương rồng kích thước lớn tạo điểm nhấn độc đáo cho phòng khách và sân vườn.',
-    bg: 'from-emerald-900 via-green-800 to-teal-700',
-    img: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=900&h=500&fit=crop&auto=format',
-    link: '/san-pham?category=xuong-rong-decor',
-    cta: 'Xem Xương Rồng Decor',
-  },
-  {
-    id: 3,
-    tag: 'Các Loại Cây Khác',
-    title: 'Xanh Hóa Không Gian Sống',
-    desc: 'Monstera, lan hồ điệp, bonsai, rau thơm... Đa dạng cây cảnh cho mọi không gian và nhu cầu trang trí.',
-    bg: 'from-lime-900 via-green-800 to-emerald-700',
-    img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=900&h=500&fit=crop&auto=format',
-    link: '/san-pham?category=cay-khac',
-    cta: 'Khám Phá Ngay',
-  },
-  {
-    id: 4,
-    tag: 'Quà Tặng Cây Xanh',
-    title: 'Quà Tặng Ý Nghĩa & Độc Đáo',
-    desc: 'Combo cây mini đóng gói đẹp, kèm thiệp và hướng dẫn chăm sóc. Thích hợp tặng sinh nhật, khai trương, tốt nghiệp.',
-    bg: 'from-teal-900 via-green-800 to-primary-700',
-    img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=900&h=500&fit=crop&auto=format',
-    link: '/san-pham?category=cay-khac',
-    cta: 'Xem Quà Tặng',
-  },
+const DEFAULT_SLIDES = [
+  { id: 1, tag: 'Xương Rồng Mini', title: 'Xương Rồng Mini Dễ Thương', desc: 'Sen đá, cầu vàng, haworthia, lithops... hàng trăm loại xương rồng mini xinh xắn cho bàn làm việc và nội thất.', bg: 'from-primary-900 via-primary-800 to-teal-700', img: 'https://images.unsplash.com/photo-1530530488516-02af946f86fb?w=900&h=500&fit=crop&auto=format', link: '/san-pham?category=xuong-rong-mini', cta: 'Xem Xương Rồng Mini' },
+  { id: 2, tag: 'Xương Rồng Decor', title: 'Điểm Nhấn Trang Trí Không Gian', desc: 'Cereus, Euphorbia, Agave, Yucca... Xương rồng kích thước lớn tạo điểm nhấn độc đáo cho phòng khách và sân vườn.', bg: 'from-emerald-900 via-green-800 to-teal-700', img: 'https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=900&h=500&fit=crop&auto=format', link: '/san-pham?category=xuong-rong-decor', cta: 'Xem Xương Rồng Decor' },
+  { id: 3, tag: 'Các Loại Cây Khác', title: 'Xanh Hóa Không Gian Sống', desc: 'Monstera, lan hồ điệp, bonsai, rau thơm... Đa dạng cây cảnh cho mọi không gian và nhu cầu trang trí.', bg: 'from-lime-900 via-green-800 to-emerald-700', img: 'https://images.unsplash.com/photo-1614594975525-e45190c55d0b?w=900&h=500&fit=crop&auto=format', link: '/san-pham?category=cay-khac', cta: 'Khám Phá Ngay' },
+  { id: 4, tag: 'Quà Tặng Cây Xanh', title: 'Quà Tặng Ý Nghĩa & Độc Đáo', desc: 'Combo cây mini đóng gói đẹp, kèm thiệp và hướng dẫn chăm sóc. Thích hợp tặng sinh nhật, khai trương, tốt nghiệp.', bg: 'from-teal-900 via-green-800 to-primary-700', img: 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=900&h=500&fit=crop&auto=format', link: '/san-pham?category=cay-khac', cta: 'Xem Quà Tặng' },
 ];
 
 export default function HeroSlider() {
+  const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    fetch('/api/banners')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setSlides(data.map(b => ({
+            id: b.id,
+            tag: b.tag,
+            title: b.title,
+            desc: b.description,
+            bg: b.bg_gradient,
+            img: b.image,
+            link: b.link,
+            cta: b.cta_text,
+          })));
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => setCurrent(c => (c + 1) % slides.length), 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   const s = slides[current];
 

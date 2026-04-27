@@ -1,4 +1,4 @@
-const BASE = 'http://localhost:5013/api/admin';
+const BASE = `${import.meta.env.VITE_API_URL || ''}/api/admin`;
 
 function getToken() {
   return localStorage.getItem('xrn_admin_token');

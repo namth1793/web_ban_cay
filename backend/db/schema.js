@@ -65,5 +65,9 @@ export async function createTables(db) {
   }
 
   // Migration: add author column to articles for existing databases
-  try { await db.exec('ALTER TABLE articles ADD COLUMN author TEXT'); } catch {}
+  if (db.type === 'pg') {
+    try { await db.exec('ALTER TABLE articles ADD COLUMN IF NOT EXISTS author TEXT'); } catch {}
+  } else {
+    try { await db.exec('ALTER TABLE articles ADD COLUMN author TEXT'); } catch {}
+  }
 }

@@ -32,7 +32,7 @@ export default function AdminLayout() {
             <span className="text-2xl">🌵</span>
             <div>
               <p className="font-bold text-sm leading-tight">Xương Rồng</p>
-              <p className="text-green-300 text-xs">Nông Lâm Admin</p>
+              <p className="text-green-300 text-xs">Trên Mây Admin</p>
             </div>
           </div>
         </div>

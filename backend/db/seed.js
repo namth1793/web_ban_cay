@@ -33,10 +33,10 @@ export async function seedData(db) {
   const settingsCount = await db.get('SELECT COUNT(*) as c FROM site_settings');
   if (Number(settingsCount.c) === 0) {
     const defaults = [
-      ['site_name', 'Xương Rồng Nông Lâm'],
+      ['site_name', 'Xương Rồng Trên Mây'],
       ['site_tagline', 'Cây Cảnh - Xương Rồng - Sen Đá - Bonsai'],
       ['contact_phone', '0979.840.050'],
-      ['contact_email', 'info@xuongrongnonglam.vn'],
+      ['contact_email', 'info@xuongrong.vn'],
       ['contact_address', 'TP.HCM, Việt Nam'],
     ];
     const upsert = db.type === 'pg'

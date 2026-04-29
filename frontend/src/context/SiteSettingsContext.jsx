@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { api } from '../api';
 
 const SiteSettingsContext = createContext({
-  site_name: 'Xương Rồng Nông Lâm',
+  site_name: 'Xương Rồng Trên Mây',
   site_tagline: 'Cây Cảnh - Xương Rồng - Sen Đá - Bonsai',
   contact_phone: '0979.840.050',
   contact_email: '',
@@ -11,7 +11,7 @@ const SiteSettingsContext = createContext({
 
 export function SiteSettingsProvider({ children }) {
   const [settings, setSettings] = useState({
-    site_name: 'Xương Rồng Nông Lâm',
+    site_name: 'Xương Rồng Trên Mây',
     site_tagline: 'Cây Cảnh - Xương Rồng - Sen Đá - Bonsai',
     contact_phone: '0979.840.050',
     contact_email: '',

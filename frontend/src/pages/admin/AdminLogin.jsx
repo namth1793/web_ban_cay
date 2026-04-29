@@ -32,7 +32,7 @@ export default function AdminLogin() {
         <div className="flex items-center gap-2 mb-6">
           <span className="text-3xl">🌵</span>
           <div>
-            <h1 className="text-xl font-bold text-green-800">Xương Rồng Nông Lâm</h1>
+            <h1 className="text-xl font-bold text-green-800">Xương Rồng Trên Mây</h1>
             <p className="text-sm text-gray-500">Trang quản trị</p>
           </div>
         </div>

@@ -27,7 +27,7 @@ async function createPgAdapter() {
       const pgSql = toPostgres(sql);
       const isInsert = pgSql.trim().toUpperCase().startsWith('INSERT');
       const { rows, rowCount } = await client.query(
-        isInsert ? pgSql + ' RETURNING id' : pgSql,
+        isInsert ? pgSql + ' RETURNING *' : pgSql,
         params
       );
       return { lastId: rows[0]?.id ?? null, changes: rowCount };

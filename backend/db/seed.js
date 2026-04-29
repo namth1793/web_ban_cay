@@ -39,8 +39,11 @@ export async function seedData(db) {
       ['contact_email', 'info@xuongrongnonglam.vn'],
       ['contact_address', 'TP.HCM, Việt Nam'],
     ];
+    const upsert = db.type === 'pg'
+      ? 'INSERT INTO site_settings (key, value) VALUES (?, ?) ON CONFLICT (key) DO NOTHING'
+      : 'INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)';
     for (const [key, value] of defaults) {
-      await db.run('INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)', [key, value]);
+      await db.run(upsert, [key, value]);
     }
   }
 

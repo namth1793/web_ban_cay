@@ -313,8 +313,11 @@ export default function adminRouter(db) {
 
   router.put('/settings', auth, async (req, res) => {
     try {
+      const upsert = db.type === 'pg'
+        ? 'INSERT INTO site_settings (key, value) VALUES (?, ?) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value'
+        : 'INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)';
       for (const [key, value] of Object.entries(req.body)) {
-        await db.run('INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)', [key, String(value)]);
+        await db.run(upsert, [key, String(value)]);
       }
       const rows = await db.all('SELECT key, value FROM site_settings');
       res.json(Object.fromEntries(rows.map(r => [r.key, r.value])));

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../../adminApi';
+import ImageUploader from '../../components/ImageUploader';
 
 const empty = {
   category_id: '', name: '', price: '', original_price: '',
@@ -214,14 +215,8 @@ export default function AdminProducts() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">URL ảnh</label>
-                <input
-                  type="text"
-                  value={form.image}
-                  onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="https://..."
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ảnh sản phẩm</label>
+                <ImageUploader value={form.image} onChange={url => setForm(f => ({ ...f, image: url }))} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>

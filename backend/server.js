@@ -27,6 +27,15 @@ app.use('/api/categories', categoriesRouter(db));
 app.use('/api/articles', articlesRouter(db));
 app.use('/api/contacts', contactsRouter(db));
 app.use('/api/orders', ordersRouter(db));
+app.get('/api/settings', async (req, res) => {
+  try {
+    const rows = await db.all('SELECT key, value FROM site_settings');
+    res.json(Object.fromEntries(rows.map(r => [r.key, r.value])));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/api/banners', async (req, res) => {
   try {
     const rows = await db.all('SELECT * FROM hero_banners WHERE active = 1 ORDER BY sort_order ASC');

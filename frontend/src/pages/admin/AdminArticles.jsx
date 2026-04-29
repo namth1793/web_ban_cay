@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../../adminApi';
+import ImageUploader from '../../components/ImageUploader';
 
 const TYPES = [
   { value: 'care', label: 'Chăm sóc cây' },
@@ -140,14 +141,8 @@ export default function AdminArticles() {
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">URL ảnh bìa</label>
-                <input
-                  type="text"
-                  value={form.image}
-                  onChange={e => setForm(f => ({ ...f, image: e.target.value }))}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                  placeholder="https://..."
-                />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ảnh bìa</label>
+                <ImageUploader value={form.image} onChange={url => setForm(f => ({ ...f, image: url }))} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Tóm tắt</label>
@@ -164,8 +159,8 @@ export default function AdminArticles() {
                   value={form.content}
                   onChange={e => setForm(f => ({ ...f, content: e.target.value }))}
                   rows={10}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 font-mono text-sm"
-                  placeholder="Nội dung bài viết (hỗ trợ HTML)..."
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
+                  placeholder="Nội dung bài viết. Xuống dòng để tách đoạn..."
                 />
               </div>
               {error && <p className="text-red-600 text-sm">{error}</p>}

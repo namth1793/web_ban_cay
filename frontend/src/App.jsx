@@ -18,10 +18,13 @@ import AdminArticles from './pages/admin/AdminArticles';
 import AdminOrders from './pages/admin/AdminOrders';
 import AdminContacts from './pages/admin/AdminContacts';
 import AdminBanner from './pages/admin/AdminBanner';
+import AdminSettings from './pages/admin/AdminSettings';
+import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
 export default function App() {
   return (
     <BrowserRouter>
+      <SiteSettingsProvider>
       <CartProvider>
         <Routes>
           {/* Admin routes — no Navbar/Footer */}
@@ -33,6 +36,7 @@ export default function App() {
             <Route path="orders" element={<AdminOrders />} />
             <Route path="contacts" element={<AdminContacts />} />
             <Route path="banners" element={<AdminBanner />} />
+            <Route path="settings" element={<AdminSettings />} />
           </Route>
 
           {/* Public site */}
@@ -56,6 +60,7 @@ export default function App() {
           } />
         </Routes>
       </CartProvider>
+      </SiteSettingsProvider>
     </BrowserRouter>
   );
 }

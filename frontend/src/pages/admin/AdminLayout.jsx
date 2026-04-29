@@ -9,6 +9,7 @@ const nav = [
   { to: '/admin/banners', label: 'Banner Hero', icon: '🖼️' },
   { to: '/admin/orders', label: 'Đơn hàng', icon: '🛒' },
   { to: '/admin/contacts', label: 'Liên hệ', icon: '📬' },
+  { to: '/admin/settings', label: 'Cài đặt', icon: '⚙️' },
 ];
 
 export default function AdminLayout() {

@@ -209,10 +209,11 @@ export default function ArticleDetail() {
 
           <p className="text-gray-500 italic border-l-4 border-primary-400 pl-4 mb-6">{data.summary}</p>
 
-          <div
-            className="prose prose-green max-w-none text-gray-700 leading-relaxed [&>h2]:text-xl [&>h2]:font-bold [&>h2]:text-primary-800 [&>h2]:mt-6 [&>h2]:mb-3 [&>p]:mb-4 [&>p]:leading-relaxed"
-            dangerouslySetInnerHTML={{ __html: data.content }}
-          />
+          <div className="text-gray-700 leading-relaxed space-y-4">
+            {(data.content || '').split(/\n\n+/).map((para, i) => (
+              <p key={i} className="whitespace-pre-line">{para}</p>
+            ))}
+          </div>
 
           {/* Reactions */}
           <ReactionBar articleId={data.id} />

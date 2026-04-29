@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../../adminApi';
+import ImageUploader from '../../components/ImageUploader';
 
 const GRADIENTS = [
   { label: 'Xanh lá đậm', value: 'from-primary-900 via-primary-800 to-teal-700' },
@@ -154,13 +155,8 @@ export default function AdminBanner() {
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">URL ảnh banner *</label>
-                <input type="text" value={form.image} onChange={f('image')} required placeholder="https://..."
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500" />
-                {form.image && (
-                  <img src={form.image} alt="preview" className="mt-2 w-full h-32 object-cover rounded-lg"
-                    onError={e => { e.target.style.display = 'none'; }} />
-                )}
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ảnh banner *</label>
+                <ImageUploader value={form.image} onChange={url => setForm(prev => ({ ...prev, image: url }))} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Link khi click</label>

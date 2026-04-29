@@ -16,6 +16,7 @@ export const api = {
   createOrder: (data) => fetch(`${BASE}/orders`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(r => r.json()),
 
   getBanners: () => fetch(`${BASE}/banners`).then(r => r.json()),
+  getSettings: () => fetch(`${BASE}/settings`).then(r => r.json()),
 
   // Reactions
   getReactions: (articleId, sessionId) =>

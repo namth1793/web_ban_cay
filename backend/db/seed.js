@@ -29,6 +29,21 @@ export async function seedData(db) {
     await db.run(B, ['Quà Tặng Ý Nghĩa & Độc Đáo', 'Combo cây mini đóng gói đẹp, kèm thiệp và hướng dẫn chăm sóc. Thích hợp tặng sinh nhật, khai trương, tốt nghiệp.', 'Quà Tặng Cây Xanh', 'https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=900&h=500&fit=crop&auto=format', '/san-pham?category=cay-khac', 'Xem Quà Tặng', 'from-teal-900 via-green-800 to-primary-700', 4]);
   }
 
+  // Seed site_settings independently (always run)
+  const settingsCount = await db.get('SELECT COUNT(*) as c FROM site_settings');
+  if (Number(settingsCount.c) === 0) {
+    const defaults = [
+      ['site_name', 'Xương Rồng Nông Lâm'],
+      ['site_tagline', 'Cây Cảnh - Xương Rồng - Sen Đá - Bonsai'],
+      ['contact_phone', '0979.840.050'],
+      ['contact_email', 'info@xuongrongnonglam.vn'],
+      ['contact_address', 'TP.HCM, Việt Nam'],
+    ];
+    for (const [key, value] of defaults) {
+      await db.run('INSERT OR IGNORE INTO site_settings (key, value) VALUES (?, ?)', [key, value]);
+    }
+  }
+
   const count = await db.get('SELECT COUNT(*) as c FROM categories');
   if (Number(count.c) > 0) return;
 
@@ -98,32 +113,108 @@ export async function seedData(db) {
 
   await db.run(ART, ['cham-soc','Cách Chăm Sóc Cây Cảnh Trong Nhà Cho Người Mới Bắt Đầu','cach-cham-soc-cay-canh-trong-nha',
     'Hướng dẫn toàn diện về ánh sáng, nước, đất và phân bón cho các loại cây cảnh trong nhà phổ biến.',
-    `<h2>1. Ánh Sáng - Yếu Tố Quan Trọng Nhất</h2><p>Mỗi loại cây có nhu cầu ánh sáng khác nhau. Cây lá xanh đậm (monstera, pothos, sansevieria) chịu bóng tốt. Cây hoa và cây lá màu cần nhiều ánh sáng hơn để ra hoa.</p><h2>2. Tưới Nước Đúng Cách</h2><p>Nguyên tắc vàng: kiểm tra đất trước khi tưới. Đút ngón tay 3-4cm vào đất, nếu còn ẩm thì chưa cần tưới. Tưới thấm đến khi nước chảy ra đáy chậu.</p><h2>3. Chọn Đất Phù Hợp</h2><p>Đa số cây trong nhà cần đất tơi xốp, thoát nước tốt. Trộn đất vườn + phân hữu cơ + trấu hun theo tỷ lệ 3:1:1.</p><h2>4. Bón Phân</h2><p>Bón phân NPK loãng 1 lần/tháng trong mùa xuân-hè. Giảm xuống 1 lần/2 tháng vào thu-đông.</p>`,
+    `1. Ánh Sáng - Yếu Tố Quan Trọng Nhất
+
+Mỗi loại cây có nhu cầu ánh sáng khác nhau. Cây lá xanh đậm (monstera, pothos, sansevieria) chịu bóng tốt. Cây hoa và cây lá màu cần nhiều ánh sáng hơn để ra hoa.
+
+2. Tưới Nước Đúng Cách
+
+Nguyên tắc vàng: kiểm tra đất trước khi tưới. Đút ngón tay 3-4cm vào đất, nếu còn ẩm thì chưa cần tưới. Tưới thấm đến khi nước chảy ra đáy chậu.
+
+3. Chọn Đất Phù Hợp
+
+Đa số cây trong nhà cần đất tơi xốp, thoát nước tốt. Trộn đất vườn + phân hữu cơ + trấu hun theo tỷ lệ 3:1:1.
+
+4. Bón Phân
+
+Bón phân NPK loãng 1 lần/tháng trong mùa xuân-hè. Giảm xuống 1 lần/2 tháng vào thu-đông.`,
     imgs.monstera]);
 
   await db.run(ART, ['cham-soc','Bí Quyết Chăm Sóc Xương Rồng & Sen Đá Luôn Tươi Đẹp','bi-quyet-cham-soc-xuong-rong-sen-da',
     'Hướng dẫn chi tiết cách chăm sóc xương rồng và sen đá để cây luôn khỏe mạnh, đẹp và ra hoa.',
-    `<h2>Hiểu Về Nhu Cầu Của Xương Rồng</h2><p>Xương rồng và sen đá là loài cây sa mạc, thích nghi với môi trường khô hạn. Điều quan trọng nhất là KHÔNG tưới quá nhiều nước.</p><h2>Tưới Nước Đúng Cách</h2><p>Tưới đẫm rồi để đất khô hoàn toàn mới tưới lại. Mùa hè 2 tuần/lần, mùa đông 1 tháng/lần. Tuyệt đối không để nước đọng trong lòng chậu.</p><h2>Ánh Sáng Cho Xương Rồng</h2><p>Hầu hết xương rồng cần nắng trực tiếp 4-6 tiếng/ngày. Đặt ở ban công hoặc cửa sổ hướng Nam là lý tưởng nhất.</p><h2>Đất Và Chậu</h2><p>Dùng đất chuyên dụng xương rồng hoặc pha thêm 50% cát thô. Chậu đất nung thấm nước tốt hơn chậu nhựa.</p>`,
+    `Hiểu Về Nhu Cầu Của Xương Rồng
+
+Xương rồng và sen đá là loài cây sa mạc, thích nghi với môi trường khô hạn. Điều quan trọng nhất là KHÔNG tưới quá nhiều nước.
+
+Tưới Nước Đúng Cách
+
+Tưới đẫm rồi để đất khô hoàn toàn mới tưới lại. Mùa hè 2 tuần/lần, mùa đông 1 tháng/lần. Tuyệt đối không để nước đọng trong lòng chậu.
+
+Ánh Sáng Cho Xương Rồng
+
+Hầu hết xương rồng cần nắng trực tiếp 4-6 tiếng/ngày. Đặt ở ban công hoặc cửa sổ hướng Nam là lý tưởng nhất.
+
+Đất Và Chậu
+
+Dùng đất chuyên dụng xương rồng hoặc pha thêm 50% cát thô. Chậu đất nung thấm nước tốt hơn chậu nhựa.`,
     imgs.cactus1]);
 
   await db.run(ART, ['cham-soc','Trồng Rau Sạch Tại Nhà Trên Ban Công Đơn Giản','trong-rau-sach-tai-nha-tren-ban-cong',
     'Hướng dẫn từng bước trồng rau thơm, rau ăn lá ngay tại ban công nhỏ. Luôn có rau sạch hữu cơ cho gia đình.',
-    `<h2>Chuẩn Bị Dụng Cụ</h2><p>Cần: chậu có lỗ thoát nước (đường kính 20-30cm), đất trồng rau chuyên dụng, hạt giống hoặc cây giống, phân hữu cơ vi sinh.</p><h2>Các Loại Rau Dễ Trồng Nhất</h2><p>Người mới nên bắt đầu với: rau muống (30 ngày), cải xanh (25-30 ngày), húng quế (30-40 ngày), xà lách (35-45 ngày).</p><h2>Kỹ Thuật Gieo Hạt</h2><p>Ngâm hạt 6-8 tiếng trong nước ấm trước khi gieo. Gieo hạt sâu 1-2cm, cách nhau 5-7cm. Tưới ẩm mỗi ngày.</p>`,
+    `Chuẩn Bị Dụng Cụ
+
+Cần: chậu có lỗ thoát nước (đường kính 20-30cm), đất trồng rau chuyên dụng, hạt giống hoặc cây giống, phân hữu cơ vi sinh.
+
+Các Loại Rau Dễ Trồng Nhất
+
+Người mới nên bắt đầu với: rau muống (30 ngày), cải xanh (25-30 ngày), húng quế (30-40 ngày), xà lách (35-45 ngày).
+
+Kỹ Thuật Gieo Hạt
+
+Ngâm hạt 6-8 tiếng trong nước ấm trước khi gieo. Gieo hạt sâu 1-2cm, cách nhau 5-7cm. Tưới ẩm mỗi ngày.`,
     imgs.herbs]);
 
   await db.run(ART, ['thong-tin','Top 10 Cây Cảnh Lọc Không Khí Tốt Nhất Cho Nhà Và Văn Phòng','top-10-cay-canh-loc-khong-khi',
     'NASA đã nghiên cứu và chứng minh những loài cây này có khả năng lọc chất độc hại trong không khí hiệu quả nhất.',
-    `<h2>Nghiên Cứu NASA</h2><p>Năm 1989, NASA thực hiện nghiên cứu về khả năng lọc không khí của cây xanh. Kết quả cho thấy nhiều loài cây thông thường có thể loại bỏ formaldehyde, benzene và các chất độc.</p><h2>Top Cây Lọc Không Khí</h2><p><strong>1. Lưỡi hổ (Sansevieria)</strong>: Lọc formaldehyde, xylene, toluene, benzene.</p><p><strong>2. Trầu bà/Pothos</strong>: Loại bỏ formaldehyde, xylene và benzene.</p><p><strong>3. Bạch môn (Peace Lily)</strong>: Lọc nhiều chất độc nhất, kể cả acetone.</p><p><strong>4. Dracaena</strong>: Rất hiệu quả với trichloroethylene và xylene.</p>`,
+    `Nghiên Cứu NASA
+
+Năm 1989, NASA thực hiện nghiên cứu về khả năng lọc không khí của cây xanh. Kết quả cho thấy nhiều loài cây thông thường có thể loại bỏ formaldehyde, benzene và các chất độc.
+
+Top Cây Lọc Không Khí
+
+1. Lưỡi hổ (Sansevieria): Lọc formaldehyde, xylene, toluene, benzene.
+2. Trầu bà/Pothos: Loại bỏ formaldehyde, xylene và benzene.
+3. Bạch môn (Peace Lily): Lọc nhiều chất độc nhất, kể cả acetone.
+4. Dracaena: Rất hiệu quả với trichloroethylene và xylene.
+5. Cây nhện (Spider Plant): Loại bỏ carbon monoxide và xylene.`,
     imgs.sanseveria]);
 
   await db.run(ART, ['thong-tin','Ý Nghĩa Phong Thủy Của Các Loại Cây Cảnh Phổ Biến','y-nghia-phong-thuy-cay-canh-pho-bien',
     'Tìm hiểu ý nghĩa phong thủy của từng loại cây cảnh: cây nào mang tài lộc, cây nào xua đuổi tà khí.',
-    `<h2>Cây Kim Tiền (ZZ Plant)</h2><p>Biểu tượng tài lộc số 1 trong phong thủy. Đặt tại góc tài lộc (Đông Nam) để tăng tài vận.</p><h2>Lưỡi Hổ (Sansevieria)</h2><p>Mang lại sức mạnh và bảo vệ. Đặt hai bên cổng hoặc cửa vào để bảo vệ gia đình.</p><h2>Xương Rồng Cầu Vàng</h2><p>Hình tròn tượng trưng cho sự viên mãn và tiền bạc dồi dào. Đặt trên bàn làm việc để thu hút tài lộc.</p><h2>Trầu Bà (Pothos)</h2><p>Tượng trưng cho sự phát triển và thịnh vượng liên tục. Dây leo dài ra tượng trưng cho sự phát triển không ngừng.</p>`,
+    `Cây Kim Tiền (ZZ Plant)
+
+Biểu tượng tài lộc số 1 trong phong thủy. Đặt tại góc tài lộc (Đông Nam) để tăng tài vận.
+
+Lưỡi Hổ (Sansevieria)
+
+Mang lại sức mạnh và bảo vệ. Đặt hai bên cổng hoặc cửa vào để bảo vệ gia đình.
+
+Xương Rồng Cầu Vàng
+
+Hình tròn tượng trưng cho sự viên mãn và tiền bạc dồi dào. Đặt trên bàn làm việc để thu hút tài lộc.
+
+Trầu Bà (Pothos)
+
+Tượng trưng cho sự phát triển và thịnh vượng liên tục. Dây leo dài ra tượng trưng cho sự phát triển không ngừng.`,
     imgs.zz]);
 
   await db.run(ART, ['thong-tin','Hướng Dẫn Chọn Cây Cảnh Phù Hợp Với Không Gian Sống','huong-dan-chon-cay-canh-phu-hop',
     'Cách chọn cây cảnh đúng theo diện tích, ánh sáng, phong cách nội thất và ngân sách.',
-    `<h2>Đánh Giá Điều Kiện Nhà Bạn</h2><p>Trước khi chọn cây, cần xác định: nhà hướng nào (ánh sáng nhiều hay ít?), diện tích đặt cây, phong cách nội thất, và thời gian có thể dành để chăm sóc.</p><h2>Nhà Ít Ánh Sáng</h2><p>Chọn: lưỡi hổ, ZZ plant, pothos, sansevieria. Tránh: xương rồng, hoa hồng, lavender.</p><h2>Người Bận Rộn</h2><p>Ưu tiên cây chịu hạn: ZZ plant, lưỡi hổ, xương rồng, sen đá. Đây là những cây có thể không tưới 2-3 tuần mà không chết.</p><h2>Muốn Cây Ra Hoa</h2><p>Lan hồ điệp, hoa hồng mini, lavender là những lựa chọn tốt cho nhà.</p>`,
+    `Đánh Giá Điều Kiện Nhà Bạn
+
+Trước khi chọn cây, cần xác định: nhà hướng nào (ánh sáng nhiều hay ít?), diện tích đặt cây, phong cách nội thất, và thời gian có thể dành để chăm sóc.
+
+Nhà Ít Ánh Sáng
+
+Chọn: lưỡi hổ, ZZ plant, pothos, sansevieria. Tránh: xương rồng, hoa hồng, lavender.
+
+Người Bận Rộn
+
+Ưu tiên cây chịu hạn: ZZ plant, lưỡi hổ, xương rồng, sen đá. Đây là những cây có thể không tưới 2-3 tuần mà không chết.
+
+Muốn Cây Ra Hoa
+
+Lan hồ điệp, hoa hồng mini, lavender là những lựa chọn tốt cho nhà.`,
     imgs.garden]);
 
   console.log('✅ Seed hoàn thành: 3 danh mục, 40 sản phẩm, 6 bài viết');

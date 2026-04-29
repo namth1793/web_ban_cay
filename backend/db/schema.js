@@ -58,6 +58,10 @@ export async function createTables(db) {
       active INTEGER DEFAULT 1,
       created_at ${TS} DEFAULT CURRENT_TIMESTAMP
     )`,
+    `CREATE TABLE IF NOT EXISTS site_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL DEFAULT ''
+    )`,
   ];
 
   for (const sql of tables) {

@@ -1,5 +1,16 @@
 import { Router } from 'express';
 import { createHmac } from 'crypto';
+import { Readable } from 'stream';
+import multer from 'multer';
+import { v2 as cloudinary } from 'cloudinary';
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 
 const SECRET = process.env.ADMIN_SECRET || 'xrn_admin_2025';
 const ADMIN_USER = process.env.ADMIN_USERNAME || 'admin';
@@ -265,6 +276,48 @@ export default function adminRouter(db) {
     try {
       await db.run('DELETE FROM hero_banners WHERE id = ?', [req.params.id]);
       res.json({ success: true });
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  // Cloudinary image upload
+  router.post('/upload', auth, upload.single('file'), async (req, res) => {
+    if (!req.file) return res.status(400).json({ error: 'Không có file được gửi lên' });
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      return res.status(503).json({ error: 'Chưa cấu hình Cloudinary. Vui lòng thêm CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET vào file .env' });
+    }
+    try {
+      const result = await new Promise((resolve, reject) => {
+        const stream = cloudinary.uploader.upload_stream(
+          { folder: 'xuongrong', resource_type: 'auto' },
+          (error, result) => error ? reject(error) : resolve(result)
+        );
+        Readable.from(req.file.buffer).pipe(stream);
+      });
+      res.json({ url: result.secure_url });
+    } catch (err) {
+      res.status(500).json({ error: 'Upload thất bại: ' + err.message });
+    }
+  });
+
+  // Site Settings
+  router.get('/settings', auth, async (req, res) => {
+    try {
+      const rows = await db.all('SELECT key, value FROM site_settings');
+      res.json(Object.fromEntries(rows.map(r => [r.key, r.value])));
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  router.put('/settings', auth, async (req, res) => {
+    try {
+      for (const [key, value] of Object.entries(req.body)) {
+        await db.run('INSERT OR REPLACE INTO site_settings (key, value) VALUES (?, ?)', [key, String(value)]);
+      }
+      const rows = await db.all('SELECT key, value FROM site_settings');
+      res.json(Object.fromEntries(rows.map(r => [r.key, r.value])));
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

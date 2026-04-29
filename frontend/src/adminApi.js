@@ -43,6 +43,22 @@ export const adminApi = {
   createBanner: (data) => req('POST', '/banners', data),
   updateBanner: (id, data) => req('PUT', `/banners/${id}`, data),
   deleteBanner: (id) => req('DELETE', `/banners/${id}`),
+
+  getSettings: () => req('GET', '/settings'),
+  updateSettings: (data) => req('PUT', '/settings', data),
+
+  upload: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const res = await fetch(BASE + '/upload', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${getToken()}` },
+      body: formData,
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Upload thất bại');
+    return data;
+  },
 };
 
 export function isLoggedIn() {

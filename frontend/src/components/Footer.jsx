@@ -9,7 +9,7 @@ export default function Footer() {
           {/* About */}
           <div>
             <div className="mb-4">
-              <img src={logo} alt="Xương Rồng Trên Mây" className="h-16 w-auto brightness-0 invert" />
+              <img src={logo} alt="Xương Rồng Trên Mây" className="h-16 w-auto" />
             </div>
             <p className="text-sm leading-relaxed text-gray-400">
               Chuyên cung cấp cây cảnh trong nhà, hoa lan, bonsai, xương rồng, sen đá và rau thảo mộc sạch.

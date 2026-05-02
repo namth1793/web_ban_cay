@@ -80,6 +80,17 @@ export default function adminRouter(db) {
     }
   });
 
+  function parseImgField(raw) {
+    if (!raw) return [];
+    try { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } catch {}
+    return [raw];
+  }
+
+  function withImages(row) {
+    const imgs = parseImgField(row.image);
+    return { ...row, image: imgs[0] || null, images: imgs };
+  }
+
   // Products CRUD
   router.get('/products', auth, async (req, res) => {
     try {
@@ -88,7 +99,7 @@ export default function adminRouter(db) {
         LEFT JOIN categories c ON c.id = p.category_id
         ORDER BY p.created_at DESC
       `);
-      res.json(rows);
+      res.json(rows.map(withImages));
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -96,15 +107,16 @@ export default function adminRouter(db) {
 
   router.post('/products', auth, async (req, res) => {
     try {
-      const { category_id, name, price, original_price, description, care_info, image, stock, featured } = req.body;
+      const { category_id, name, price, original_price, description, care_info, images, stock, featured } = req.body;
       if (!name || !price) return res.status(400).json({ error: 'Thiếu tên hoặc giá sản phẩm' });
+      const imageJson = Array.isArray(images) && images.length ? JSON.stringify(images) : null;
       const slug = toSlug(name) + '-' + Date.now().toString(36);
       const { lastId } = await db.run(
         'INSERT INTO products (category_id,name,slug,price,original_price,description,care_info,image,stock,featured) VALUES (?,?,?,?,?,?,?,?,?,?)',
-        [category_id || null, name, slug, price, original_price || null, description || null, care_info || null, image || null, stock ?? 100, featured ? 1 : 0]
+        [category_id || null, name, slug, price, original_price || null, description || null, care_info || null, imageJson, stock ?? 100, featured ? 1 : 0]
       );
       const product = await db.get('SELECT * FROM products WHERE id = ?', [lastId]);
-      res.json(product);
+      res.json(withImages(product));
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -112,14 +124,15 @@ export default function adminRouter(db) {
 
   router.put('/products/:id', auth, async (req, res) => {
     try {
-      const { category_id, name, price, original_price, description, care_info, image, stock, featured } = req.body;
+      const { category_id, name, price, original_price, description, care_info, images, stock, featured } = req.body;
       if (!name || !price) return res.status(400).json({ error: 'Thiếu tên hoặc giá sản phẩm' });
+      const imageJson = Array.isArray(images) && images.length ? JSON.stringify(images) : null;
       await db.run(
         'UPDATE products SET category_id=?,name=?,price=?,original_price=?,description=?,care_info=?,image=?,stock=?,featured=? WHERE id=?',
-        [category_id || null, name, price, original_price || null, description || null, care_info || null, image || null, stock ?? 100, featured ? 1 : 0, req.params.id]
+        [category_id || null, name, price, original_price || null, description || null, care_info || null, imageJson, stock ?? 100, featured ? 1 : 0, req.params.id]
       );
       const product = await db.get('SELECT * FROM products WHERE id = ?', [req.params.id]);
-      res.json(product);
+      res.json(withImages(product));
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -222,11 +235,53 @@ export default function adminRouter(db) {
     }
   });
 
-  // Categories (for product form dropdown)
+  // Categories CRUD
   router.get('/categories', auth, async (req, res) => {
     try {
-      const rows = await db.all('SELECT id, name, slug FROM categories ORDER BY sort_order');
+      const rows = await db.all('SELECT * FROM categories ORDER BY sort_order ASC, id ASC');
       res.json(rows);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  router.post('/categories', auth, async (req, res) => {
+    try {
+      const { name, description, image, sort_order } = req.body;
+      if (!name) return res.status(400).json({ error: 'Thiếu tên danh mục' });
+      const slug = toSlug(name) + '-' + Date.now().toString(36);
+      const { lastId } = await db.run(
+        'INSERT INTO categories (name, slug, description, image, sort_order) VALUES (?,?,?,?,?)',
+        [name, slug, description || null, image || null, sort_order ?? 0]
+      );
+      const row = await db.get('SELECT * FROM categories WHERE id = ?', [lastId]);
+      res.json(row);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  router.put('/categories/:id', auth, async (req, res) => {
+    try {
+      const { name, description, image, sort_order } = req.body;
+      if (!name) return res.status(400).json({ error: 'Thiếu tên danh mục' });
+      await db.run(
+        'UPDATE categories SET name=?, description=?, image=?, sort_order=? WHERE id=?',
+        [name, description || null, image || null, sort_order ?? 0, req.params.id]
+      );
+      const row = await db.get('SELECT * FROM categories WHERE id = ?', [req.params.id]);
+      res.json(row);
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
+
+  router.delete('/categories/:id', auth, async (req, res) => {
+    try {
+      const products = await db.get('SELECT COUNT(*) as c FROM products WHERE category_id = ?', [req.params.id]);
+      if (Number(products.c) > 0) return res.status(400).json({ error: `Không thể xóa: còn ${products.c} sản phẩm thuộc danh mục này` });
+      await db.run('DELETE FROM categories WHERE id = ?', [req.params.id]);
+      res.json({ success: true });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

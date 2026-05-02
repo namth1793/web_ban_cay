@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import { adminApi } from '../../adminApi';
-import ImageUploader from '../../components/ImageUploader';
+import MultiImageUploader from '../../components/MultiImageUploader';
+
+function parseImages(raw) {
+  if (!raw) return [];
+  if (Array.isArray(raw)) return raw;
+  try { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } catch {}
+  return [raw];
+}
 
 const empty = {
   category_id: '', name: '', price: '', original_price: '',
-  description: '', care_info: '', image: '', stock: 100, featured: false,
+  description: '', care_info: '', images: [], stock: 100, featured: false,
 };
 
 export default function AdminProducts() {
@@ -38,7 +45,7 @@ export default function AdminProducts() {
       original_price: p.original_price || '',
       description: p.description || '',
       care_info: p.care_info || '',
-      image: p.image || '',
+      images: parseImages(p.images ?? p.image),
       stock: p.stock ?? 100,
       featured: !!p.featured,
     });
@@ -57,6 +64,7 @@ export default function AdminProducts() {
         original_price: form.original_price ? Number(form.original_price) : null,
         stock: Number(form.stock),
         category_id: form.category_id ? Number(form.category_id) : null,
+        images: form.images,
       };
       if (modal === 'create') await adminApi.createProduct(data);
       else await adminApi.updateProduct(modal.id, data);
@@ -215,8 +223,10 @@ export default function AdminProducts() {
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Ảnh sản phẩm</label>
-                <ImageUploader value={form.image} onChange={url => setForm(f => ({ ...f, image: url }))} />
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Ảnh sản phẩm <span className="text-gray-400 font-normal">(có thể chọn nhiều ảnh)</span>
+                </label>
+                <MultiImageUploader value={form.images} onChange={urls => setForm(f => ({ ...f, images: urls }))} />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>

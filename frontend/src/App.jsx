@@ -19,6 +19,7 @@ import AdminOrders from './pages/admin/AdminOrders';
 import AdminContacts from './pages/admin/AdminContacts';
 import AdminBanner from './pages/admin/AdminBanner';
 import AdminSettings from './pages/admin/AdminSettings';
+import AdminCategories from './pages/admin/AdminCategories';
 import { SiteSettingsProvider } from './context/SiteSettingsContext';
 
 export default function App() {
@@ -32,6 +33,7 @@ export default function App() {
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="products" element={<AdminProducts />} />
+            <Route path="categories" element={<AdminCategories />} />
             <Route path="articles" element={<AdminArticles />} />
             <Route path="orders" element={<AdminOrders />} />
             <Route path="contacts" element={<AdminContacts />} />

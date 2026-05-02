@@ -38,6 +38,9 @@ export const adminApi = {
   contacts: () => req('GET', '/contacts'),
 
   categories: () => req('GET', '/categories'),
+  createCategory: (data) => req('POST', '/categories', data),
+  updateCategory: (id, data) => req('PUT', `/categories/${id}`, data),
+  deleteCategory: (id) => req('DELETE', `/categories/${id}`),
 
   banners: () => req('GET', '/banners'),
   createBanner: (data) => req('POST', '/banners', data),

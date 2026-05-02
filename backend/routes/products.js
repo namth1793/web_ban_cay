@@ -1,5 +1,16 @@
 import { Router } from 'express';
 
+function parseImgField(raw) {
+  if (!raw) return [];
+  try { const p = JSON.parse(raw); if (Array.isArray(p)) return p; } catch {}
+  return [raw];
+}
+
+function withImages(row) {
+  const imgs = parseImgField(row.image);
+  return { ...row, image: imgs[0] || null, images: imgs };
+}
+
 export default function productsRouter(db) {
   const router = Router();
 
@@ -15,7 +26,7 @@ export default function productsRouter(db) {
       sql += ' ORDER BY p.featured DESC, p.sold DESC LIMIT ? OFFSET ?';
       params.push(Number(limit), Number(offset));
       const rows = await db.all(sql, params);
-      res.json(rows);
+      res.json(rows.map(withImages));
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
@@ -32,7 +43,7 @@ export default function productsRouter(db) {
         'SELECT * FROM products WHERE category_id = ? AND id != ? ORDER BY featured DESC LIMIT 4',
         [product.category_id, product.id]
       );
-      res.json({ ...product, related });
+      res.json({ ...withImages(product), related: related.map(withImages) });
     } catch (err) {
       res.status(500).json({ error: err.message });
     }

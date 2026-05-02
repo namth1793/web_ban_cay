@@ -38,6 +38,7 @@ app.get('/api/settings', async (req, res) => {
 
 app.get('/api/banners', async (req, res) => {
   try {
+    res.setHeader('Cache-Control', 'no-store');
     const rows = await db.all('SELECT * FROM hero_banners WHERE active = 1 ORDER BY sort_order ASC');
     res.json(rows);
   } catch (err) {

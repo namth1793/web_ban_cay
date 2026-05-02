@@ -5,6 +5,7 @@ import { isLoggedIn, logout } from '../../adminApi';
 const nav = [
   { to: '/admin', label: 'Tổng quan', icon: '📊', end: true },
   { to: '/admin/products', label: 'Sản phẩm', icon: '🌿' },
+  { to: '/admin/categories', label: 'Danh mục', icon: '🏷️' },
   { to: '/admin/articles', label: 'Bài viết', icon: '📝' },
   { to: '/admin/banners', label: 'Banner Hero', icon: '🖼️' },
   { to: '/admin/orders', label: 'Đơn hàng', icon: '🛒' },

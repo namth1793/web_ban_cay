@@ -12,8 +12,8 @@ export default function HeroSlider() {
   const [slides, setSlides] = useState(DEFAULT_SLIDES);
   const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    fetch('/api/banners')
+  const fetchBanners = () => {
+    fetch('/api/banners', { cache: 'no-store' })
       .then(r => r.json())
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
@@ -30,6 +30,13 @@ export default function HeroSlider() {
         }
       })
       .catch(() => {});
+  };
+
+  useEffect(() => {
+    fetchBanners();
+    const onVisible = () => { if (document.visibilityState === 'visible') fetchBanners(); };
+    document.addEventListener('visibilitychange', onVisible);
+    return () => document.removeEventListener('visibilitychange', onVisible);
   }, []);
 
   useEffect(() => {

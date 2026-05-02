@@ -9,11 +9,10 @@ export default function Footer() {
           {/* About */}
           <div>
             <div className="mb-4">
-              <img src={logo} alt="Xương Rồng Trên Mây" className="h-16 w-auto" />
+              <img src={logo} alt="Xương Rồng Trên Mây" className="h-20 w-auto" />
             </div>
             <p className="text-sm leading-relaxed text-gray-400">
-              Chuyên cung cấp cây cảnh trong nhà, hoa lan, bonsai, xương rồng, sen đá và rau thảo mộc sạch.
-              Hơn 10 năm kinh nghiệm, uy tín hàng đầu TP.HCM.
+              Chuyên cung cấp các loại cây mọng nước, xương rồng, sen đá, dứa kiểng
             </p>
             <div className="flex gap-3 mt-4">
               <a href="https://www.tiktok.com/@vuon.trenmay" target="_blank" rel="noopener noreferrer"

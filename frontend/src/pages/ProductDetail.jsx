@@ -12,10 +12,12 @@ export default function ProductDetail() {
   const [qty, setQty] = useState(1);
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState(false);
+  const [activeImg, setActiveImg] = useState(0);
 
   useEffect(() => {
     setLoading(true);
     setQty(1);
+    setActiveImg(0);
     api.getProduct(slug).then(setData).finally(() => setLoading(false));
     window.scrollTo(0, 0);
   }, [slug]);
@@ -35,6 +37,8 @@ export default function ProductDetail() {
   );
 
   const disc = discount(data.price, data.original_price);
+  const images = (data.images && data.images.length > 0) ? data.images : (data.image ? [data.image] : []);
+  const PLACEHOLDER = 'https://placehold.co/600x600/dcfce7/166534?text=🌵';
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-8">
@@ -48,10 +52,33 @@ export default function ProductDetail() {
       </nav>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-        {/* Image */}
-        <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 aspect-square">
-          <img src={data.image} alt={data.name} className="w-full h-full object-cover"
-            onError={e => { e.target.src = 'https://placehold.co/600x600/dcfce7/166534?text=🌵'; }} />
+        {/* Image gallery */}
+        <div>
+          <div className="rounded-2xl overflow-hidden shadow-sm border border-gray-100 aspect-square mb-3">
+            <img
+              src={images[activeImg] || PLACEHOLDER}
+              alt={data.name}
+              className="w-full h-full object-cover"
+              onError={e => { e.target.src = PLACEHOLDER; }}
+            />
+          </div>
+          {images.length > 1 && (
+            <div className="flex gap-2 overflow-x-auto pb-1">
+              {images.map((url, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={() => setActiveImg(i)}
+                  className={`flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors ${
+                    i === activeImg ? 'border-primary-500' : 'border-gray-200 hover:border-gray-400'
+                  }`}
+                >
+                  <img src={url} alt="" className="w-full h-full object-cover"
+                    onError={e => { e.target.src = PLACEHOLDER; }} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Info */}

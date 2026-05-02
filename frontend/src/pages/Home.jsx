@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../api';
+import BlogCard from '../components/BlogCard';
 import HeroSlider from '../components/HeroSlider';
 import ProductCard from '../components/ProductCard';
-import BlogCard from '../components/BlogCard';
 import Toast from '../components/Toast';
-import { api } from '../api';
 
 const categories = [
   { label: 'Xương Rồng Mini', slug: 'xuong-rong-mini', emoji: '🌵', color: 'from-green-500 to-emerald-600', desc: 'Sen đá, cầu vàng, haworthia...' },
@@ -60,9 +60,7 @@ export default function Home() {
           <div className="flex items-center gap-2 font-bold text-base">
             <span className="animate-pulse">📞</span>
             HOTLINE:&nbsp;
-            <a href="tel:0979840050" className="underline underline-offset-2">0979.840.050</a>
-            <span className="text-primary-300 font-normal">&nbsp;|&nbsp;</span>
-            <a href="tel:0337123030" className="underline underline-offset-2">0337.123.030</a>
+            <a href="tel:0979840050" className="underline underline-offset-2">096.1144.560</a>
           </div>
           <div className="flex gap-4 text-primary-100 text-xs">
             <span>✅ Giao hàng toàn quốc</span>

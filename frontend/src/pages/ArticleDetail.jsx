@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import BlogCard from '../components/BlogCard';
 import { api } from '../api';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 function getSessionId() {
   let id = localStorage.getItem('xrn_session');
@@ -155,6 +156,9 @@ function CommentSection({ articleId }) {
 }
 
 export default function ArticleDetail() {
+  const { contact_phone } = useSiteSettings();
+  const phone = contact_phone || '096.1144.560';
+  const phoneTel = phone.replace(/[^0-9]/g, '');
   const { slug } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -232,8 +236,8 @@ export default function ArticleDetail() {
             <div className="mt-6 bg-primary-50 border border-primary-100 rounded-xl p-4">
               <p className="font-bold text-primary-800 mb-1">📞 Cần tư vấn?</p>
               <p className="text-primary-700 text-sm mb-3">Liên hệ ngay để được hỗ trợ chăm sóc cây miễn phí</p>
-              <a href="tel:0979840050" className="block text-center bg-primary-600 text-white font-semibold py-2 rounded-lg text-sm hover:bg-primary-700 transition-colors">
-                0979.840.050
+              <a href={`tel:${phoneTel}`} className="block text-center bg-primary-600 text-white font-semibold py-2 rounded-lg text-sm hover:bg-primary-700 transition-colors">
+                {phone}
               </a>
             </div>
           </div>

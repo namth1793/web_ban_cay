@@ -1,8 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 export default function LienHe() {
+  const { contact_phone, contact_address } = useSiteSettings();
+  const phone = contact_phone || '096.1144.560';
+  const phoneTel = phone.replace(/[^0-9]/g, '');
+  const address = contact_address || 'TP. Hồ Chí Minh';
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -40,8 +45,8 @@ export default function LienHe() {
 
           <div className="space-y-5">
             {[
-              { icon: '📍', label: 'Địa chỉ', value: 'Phường Long Phước, TP. Hồ Chí Minh (Quận 9 cũ)', href: null },
-              { icon: '📞', label: 'Điện thoại', value: '096.1144.560', href: 'tel:0961144560' },
+              { icon: '📍', label: 'Địa chỉ', value: address, href: null },
+              { icon: '📞', label: 'Điện thoại', value: phone, href: `tel:${phoneTel}` },
             ].map(item => (
               <div key={item.label} className="flex gap-4">
                 <div className="w-12 h-12 bg-primary-100 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
@@ -60,7 +65,7 @@ export default function LienHe() {
           </div>
 
           <div className="mt-6 flex gap-3">
-            <a href="https://zalo.me/0961144560" className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
+            <a href={`https://zalo.me/${phoneTel}`} className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-xl transition-colors text-sm">
               💬 Chat Zalo
             </a>
           </div>

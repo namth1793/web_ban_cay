@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.jpg';
 import { useCart } from '../context/CartContext';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const navItems = [
   { label: 'Trang Chủ', to: '/' },
@@ -21,6 +22,9 @@ const navItems = [
 
 export default function Navbar() {
   const { count } = useCart();
+  const { contact_phone } = useSiteSettings();
+  const phone = contact_phone || '096.1144.560';
+  const phoneTel = phone.replace(/[^0-9]/g, '');
   const navigate = useNavigate();
   const location = useLocation();
   const [search, setSearch] = useState('');
@@ -47,8 +51,8 @@ export default function Navbar() {
       <div className="bg-primary-800 text-white text-xs py-1.5">
         <div className="max-w-7xl mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <a href="tel:0961144560" className="flex items-center gap-1 hover:text-primary-200 transition-colors">
-              <span>📞</span> 096.1144.560
+            <a href={`tel:${phoneTel}`} className="flex items-center gap-1 hover:text-primary-200 transition-colors">
+              <span>📞</span> {phone}
             </a>
           </div>
           <div className="flex items-center gap-3 text-primary-100">
@@ -56,7 +60,7 @@ export default function Navbar() {
             <span className="hidden md:inline text-primary-600">|</span>
             <a href="https://www.tiktok.com/@vuon.trenmay" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">TikTok</a>
             <span className="text-primary-600">|</span>
-            <a href="https://zalo.me/0961144560" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Zalo</a>
+            <a href={`https://zalo.me/${phoneTel}`} target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Zalo</a>
           </div>
         </div>
       </div>
@@ -86,8 +90,8 @@ export default function Navbar() {
           </form>
 
           <div className="ml-auto flex items-center gap-3">
-            <a href="tel:0961144560" className="hidden lg:flex items-center gap-2 bg-primary-50 border border-primary-200 text-primary-700 rounded-full px-4 py-2 text-sm font-semibold hover:bg-primary-100 transition-colors">
-              <span>📞</span> 096.1144.560
+            <a href={`tel:${phoneTel}`} className="hidden lg:flex items-center gap-2 bg-primary-50 border border-primary-200 text-primary-700 rounded-full px-4 py-2 text-sm font-semibold hover:bg-primary-100 transition-colors">
+              <span>📞</span> {phone}
             </a>
             <Link to="/gio-hang" className="relative flex items-center gap-2 bg-primary-600 hover:bg-primary-700 text-white rounded-full px-4 py-2 text-sm font-semibold transition-colors">
               <span>🛒</span>

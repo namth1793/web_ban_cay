@@ -5,6 +5,7 @@ import BlogCard from '../components/BlogCard';
 import HeroSlider from '../components/HeroSlider';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
+import { useSiteSettings } from '../context/SiteSettingsContext';
 
 const categories = [
   { label: 'Xương Rồng Mini', slug: 'xuong-rong-mini', emoji: '🌵', color: 'from-green-500 to-emerald-600', desc: 'Sen đá, cầu vàng, haworthia...' },
@@ -42,6 +43,9 @@ function ProductSection({ title, category, onAddToCart }) {
 }
 
 export default function Home() {
+  const { contact_phone } = useSiteSettings();
+  const phone = contact_phone || '096.1144.560';
+  const phoneTel = phone.replace(/[^0-9]/g, '');
   const [articles, setArticles] = useState([]);
   const [toast, setToast] = useState(false);
   const handleAdd = () => setToast(true);
@@ -60,7 +64,7 @@ export default function Home() {
           <div className="flex items-center gap-2 font-bold text-base">
             <span className="animate-pulse">📞</span>
             HOTLINE:&nbsp;
-            <a href="tel:0979840050" className="underline underline-offset-2">096.1144.560</a>
+            <a href={`tel:${phoneTel}`} className="underline underline-offset-2">{phone}</a>
           </div>
           <div className="flex gap-4 text-primary-100 text-xs">
             <span>✅ Giao hàng toàn quốc</span>

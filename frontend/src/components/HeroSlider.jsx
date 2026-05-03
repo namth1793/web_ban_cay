@@ -29,21 +29,27 @@ export default function HeroSlider() {
           })));
         }
       })
-      .catch(() => {});
+      .catch(err => console.warn('[HeroSlider] fetch /api/banners failed:', err));
   };
 
   useEffect(() => {
     fetchBanners();
 
+    // Polling mỗi 15s khi tab đang hiển thị
+    const poll = setInterval(() => {
+      if (document.visibilityState === 'visible') fetchBanners();
+    }, 15000);
+
     // Re-fetch khi tab được focus lại
     const onVisible = () => { if (document.visibilityState === 'visible') fetchBanners(); };
     document.addEventListener('visibilitychange', onVisible);
 
-    // Re-fetch ngay khi admin lưu banner (BroadcastChannel)
+    // Re-fetch ngay khi admin lưu banner (BroadcastChannel — cùng browser)
     const bc = new BroadcastChannel('xrn_admin');
     bc.onmessage = (e) => { if (e.data?.type === 'banners_updated') fetchBanners(); };
 
     return () => {
+      clearInterval(poll);
       document.removeEventListener('visibilitychange', onVisible);
       bc.close();
     };

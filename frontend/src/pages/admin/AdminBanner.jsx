@@ -50,7 +50,9 @@ export default function AdminBanner() {
       else await adminApi.updateBanner(modal.id, payload);
       setModal(null);
       await load();
-      new BroadcastChannel('xrn_admin').postMessage({ type: 'banners_updated' });
+      const bc = new BroadcastChannel('xrn_admin');
+      bc.postMessage({ type: 'banners_updated' });
+      bc.close();
     } catch (err) {
       setError(err.message);
     } finally {
@@ -62,7 +64,9 @@ export default function AdminBanner() {
     if (!confirm('Xóa banner này?')) return;
     await adminApi.deleteBanner(id);
     await load();
-    new BroadcastChannel('xrn_admin').postMessage({ type: 'banners_updated' });
+    const bc = new BroadcastChannel('xrn_admin');
+    bc.postMessage({ type: 'banners_updated' });
+    bc.close();
   };
 
   const f = (key) => (e) => setForm(prev => ({ ...prev, [key]: e.target.value }));

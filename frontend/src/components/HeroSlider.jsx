@@ -34,9 +34,19 @@ export default function HeroSlider() {
 
   useEffect(() => {
     fetchBanners();
+
+    // Re-fetch khi tab được focus lại
     const onVisible = () => { if (document.visibilityState === 'visible') fetchBanners(); };
     document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
+
+    // Re-fetch ngay khi admin lưu banner (BroadcastChannel)
+    const bc = new BroadcastChannel('xrn_admin');
+    bc.onmessage = (e) => { if (e.data?.type === 'banners_updated') fetchBanners(); };
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      bc.close();
+    };
   }, []);
 
   useEffect(() => {

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { api } from '../api';
 
 const DEFAULT_SLIDES = [
   { id: 1, tag: 'Xương Rồng Mini', title: 'Xương Rồng Mini Dễ Thương', desc: 'Sen đá, cầu vàng, haworthia, lithops... hàng trăm loại xương rồng mini xinh xắn cho bàn làm việc và nội thất.', bg: 'from-primary-900 via-primary-800 to-teal-700', img: 'https://images.unsplash.com/photo-1530530488516-02af946f86fb?w=900&h=500&fit=crop&auto=format', link: '/san-pham?category=xuong-rong-mini', cta: 'Xem Xương Rồng Mini' },
@@ -13,8 +14,7 @@ export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
 
   const fetchBanners = () => {
-    fetch('/api/banners', { cache: 'no-store' })
-      .then(r => r.json())
+    api.getBanners()
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           setSlides(data.map(b => ({
@@ -29,7 +29,7 @@ export default function HeroSlider() {
           })));
         }
       })
-      .catch(err => console.warn('[HeroSlider] fetch /api/banners failed:', err));
+      .catch(err => console.warn('[HeroSlider] fetch banners failed:', err));
   };
 
   useEffect(() => {

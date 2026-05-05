@@ -233,8 +233,8 @@ export default function AdminProducts() {
                 <textarea
                   value={form.description}
                   onChange={e => setForm(f => ({ ...f, description: e.target.value }))}
-                  rows={3}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  rows={5}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
                 />
               </div>
               <div>
@@ -242,8 +242,8 @@ export default function AdminProducts() {
                 <textarea
                   value={form.care_info}
                   onChange={e => setForm(f => ({ ...f, care_info: e.target.value }))}
-                  rows={2}
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500 resize-y"
                 />
               </div>
               {error && <p className="text-red-600 text-sm">{error}</p>}

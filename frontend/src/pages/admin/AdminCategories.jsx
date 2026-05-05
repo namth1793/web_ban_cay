@@ -68,7 +68,7 @@ export default function AdminCategories() {
             <tr>
               <th className="text-left px-4 py-3 text-gray-600 font-medium w-12">STT</th>
               <th className="text-left px-4 py-3 text-gray-600 font-medium">Danh mục</th>
-              <th className="text-left px-4 py-3 text-gray-600 font-medium hidden md:table-cell">Mô tả</th>
+              <th className="text-left px-4 py-3 text-gray-600 font-medium hidden md:table-cell">Dòng chữ nhỏ (trang Home)</th>
               <th className="text-left px-4 py-3 text-gray-600 font-medium hidden md:table-cell">Slug</th>
               <th className="px-4 py-3"></th>
             </tr>
@@ -137,12 +137,15 @@ export default function AdminCategories() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Mô tả</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Dòng chữ nhỏ
+                  <span className="ml-1 text-xs font-normal text-gray-400">(hiển thị bên dưới tên danh mục trên trang Home)</span>
+                </label>
                 <textarea
                   value={form.description}
                   onChange={f('description')}
                   rows={2}
-                  placeholder="Mô tả ngắn về danh mục..."
+                  placeholder="VD: Sen đá, cầu vàng, haworthia..."
                   className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
                 />
               </div>

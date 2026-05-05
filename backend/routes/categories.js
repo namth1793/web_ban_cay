@@ -5,6 +5,7 @@ export default function categoriesRouter(db) {
 
   router.get('/', async (req, res) => {
     try {
+      res.setHeader('Cache-Control', 'no-store');
       const rows = await db.all(`
         SELECT c.id, c.name, c.slug, c.description, c.image, c.sort_order, COUNT(p.id) as product_count
         FROM categories c LEFT JOIN products p ON p.category_id = c.id

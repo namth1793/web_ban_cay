@@ -7,17 +7,12 @@ import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
 import { useSiteSettings } from '../context/SiteSettingsContext';
 
-const categories = [
-  { label: 'Xương Rồng Mini', slug: 'xuong-rong-mini', emoji: '🌵', color: 'from-green-500 to-emerald-600', desc: 'Sen đá, cầu vàng, haworthia...' },
-  { label: 'Xương Rồng Decor', slug: 'xuong-rong-decor', emoji: '🌿', color: 'from-teal-600 to-green-700', desc: 'Cereus, Euphorbia, Agave...' },
-  { label: 'Các Loại Cây Khác', slug: 'cay-khac', emoji: '🌸', color: 'from-lime-500 to-green-600', desc: 'Cây trong nhà, hoa, bonsai...' },
-];
-
-const productSections = [
-  { title: 'XƯƠNG RỒNG MINI', category: 'xuong-rong-mini' },
-  { title: 'XƯƠNG RỒNG DECOR', category: 'xuong-rong-decor' },
-  { title: 'CÁC LOẠI CÂY KHÁC', category: 'cay-khac' },
-];
+const CATEGORY_META = {
+  'xuong-rong-mini':  { emoji: '🌵', color: 'from-green-500 to-emerald-600' },
+  'xuong-rong-decor': { emoji: '🌿', color: 'from-teal-600 to-green-700' },
+  'cay-khac':         { emoji: '🌸', color: 'from-lime-500 to-green-600' },
+};
+const DEFAULT_META = { emoji: '🌿', color: 'from-green-500 to-emerald-600' };
 
 function ProductSection({ title, category, onAddToCart }) {
   const [products, setProducts] = useState([]);
@@ -46,11 +41,13 @@ export default function Home() {
   const { contact_phone } = useSiteSettings();
   const phone = contact_phone || '096.1144.560';
   const phoneTel = phone.replace(/[^0-9]/g, '');
+  const [categories, setCategories] = useState([]);
   const [articles, setArticles] = useState([]);
   const [toast, setToast] = useState(false);
   const handleAdd = () => setToast(true);
 
   useEffect(() => {
+    api.getCategories().then(setCategories);
     api.getArticles({ limit: 3 }).then(setArticles);
   }, []);
 
@@ -79,16 +76,19 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="section-title mb-8">DANH MỤC SẢN PHẨM</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {categories.map(c => (
-              <Link key={c.slug} to={`/san-pham?category=${c.slug}`}
-                className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                <div className={`bg-gradient-to-br ${c.color} p-8 h-full flex flex-col items-center justify-center text-white text-center min-h-[160px]`}>
-                  <span className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">{c.emoji}</span>
-                  <p className="font-bold text-lg leading-tight mb-1">{c.label}</p>
-                  <p className="text-white/80 text-sm">{c.desc}</p>
-                </div>
-              </Link>
-            ))}
+            {categories.map(c => {
+              const meta = CATEGORY_META[c.slug] || DEFAULT_META;
+              return (
+                <Link key={c.slug} to={`/san-pham?category=${c.slug}`}
+                  className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className={`bg-gradient-to-br ${meta.color} p-8 h-full flex flex-col items-center justify-center text-white text-center min-h-[160px]`}>
+                    <span className="text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">{meta.emoji}</span>
+                    <p className="font-bold text-lg leading-tight mb-1">{c.name}</p>
+                    <p className="text-white/80 text-sm">{c.description}</p>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -114,8 +114,8 @@ export default function Home() {
       </div>
 
       {/* Product sections */}
-      {productSections.map(s => (
-        <ProductSection key={s.category} title={s.title} category={s.category} onAddToCart={handleAdd} />
+      {categories.map(c => (
+        <ProductSection key={c.slug} title={c.name.toUpperCase()} category={c.slug} onAddToCart={handleAdd} />
       ))}
 
       {/* Blog */}

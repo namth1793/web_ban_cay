@@ -105,12 +105,12 @@ export default function ProductDetail() {
             <span>Còn {data.stock} sản phẩm</span>
           </div>
 
-          <p className="text-gray-600 leading-relaxed mb-6">{data.description}</p>
+          <p className="text-gray-600 leading-relaxed mb-6 whitespace-pre-wrap">{data.description}</p>
 
           {data.care_info && (
             <div className="bg-primary-50 border border-primary-100 rounded-xl p-4 mb-6">
               <p className="text-primary-800 font-semibold text-sm mb-1">🌿 Hướng dẫn chăm sóc</p>
-              <p className="text-primary-700 text-sm leading-relaxed">{data.care_info}</p>
+              <p className="text-primary-700 text-sm leading-relaxed whitespace-pre-wrap">{data.care_info}</p>
             </div>
           )}
 

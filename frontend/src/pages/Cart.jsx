@@ -41,7 +41,7 @@ function downloadInvoice(orderResult, form) {
   // Green header
   ctx.fillStyle = '#16a34a';
   ctx.fillRect(0, 0, W, 78);
-  txt('XUONG RONG NONG LAM', W / 2, 30, 'bold 20px Arial', '#ffffff', 'center');
+  txt('XUONG RONG TREN MAY', W / 2, 30, 'bold 20px Arial', '#ffffff', 'center');
   txt('HOA DON DAT HANG', W / 2, 52, '13px Arial', '#bbf7d0', 'center');
   txt(`Ma don: #${orderResult.orderId}`, W / 2, 70, 'bold 12px Arial', '#ffffff', 'center');
 
@@ -145,7 +145,7 @@ function downloadInvoice(orderResult, form) {
   y += 16;
 
   // Footer
-  txt('Cam on quy khach da tin tuong Xuong Rong Nong Lam!', W / 2, y, '11px Arial', '#6b7280', 'center');
+  txt('Cam on quy khach da tin tuong Xuong Rong Tren May!', W / 2, y, '11px Arial', '#6b7280', 'center');
   y += 18;
   txt('Shop se lien he lai qua so dien thoai de xac nhan don hang.', W / 2, y, 'italic 11px Arial', '#9ca3af', 'center');
   y += 18;
@@ -222,7 +222,7 @@ export default function Cart() {
       {/* Invoice preview */}
       <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm mb-6">
         <div className="bg-primary-700 text-white px-6 py-4 text-center">
-          <p className="font-extrabold text-lg tracking-wide">XƯƠNG RỒNG NÔNG LÂM</p>
+          <p className="font-extrabold text-lg tracking-wide">XƯƠNG RỒNG TRÊN MÂY</p>
           <p className="text-primary-200 text-sm">HÓA ĐƠN ĐẶT HÀNG — #{orderResult.orderId}</p>
         </div>
 

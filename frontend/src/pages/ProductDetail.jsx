@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { api, discount, formatPrice } from '../api';
 import ProductCard from '../components/ProductCard';
 import Toast from '../components/Toast';
-import { api, formatPrice, discount } from '../api';
 import { useCart } from '../context/CartContext';
 
 export default function ProductDetail() {
@@ -136,9 +136,9 @@ export default function ProductDetail() {
           </Link>
 
           <div className="flex gap-6 text-sm text-gray-500">
-            <span className="flex items-center gap-1">✅ Hàng chính hãng</span>
+            <span className="flex items-center gap-1">✅ Cây khoẻ mạnh</span>
             <span className="flex items-center gap-1">🚚 Giao toàn quốc</span>
-            <span className="flex items-center gap-1">🔄 Đổi trả 7 ngày</span>
+            <span className="flex items-center gap-1">🔄 Bao bù nếu nhận cây hư</span>
           </div>
         </div>
       </div>

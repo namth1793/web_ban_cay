@@ -131,7 +131,7 @@ function downloadInvoice(orderResult, form) {
   txt(formatPricePlain(orderResult.total), W - padding, y, '12px Arial', '#374151', 'right');
   y += 22;
   txt('Phi van chuyen:', W - 160, y, '12px Arial', '#6b7280', 'right');
-  txt('MIEN PHI', W - padding, y, '12px Arial', '#16a34a', 'right');
+  txt(formatPricePlain(30000), W - padding, y, '12px Arial', '#374151', 'right');
   y += 8;
 
   ctx.fillStyle = '#f0fdf4';
@@ -164,6 +164,7 @@ function downloadInvoice(orderResult, form) {
 }
 
 export default function Cart() {
+  const SHIPPING_FEE = 30000;
   const { items, updateQty, removeItem, clearCart, total } = useCart();
   const [form, setForm] = useState({ customer_name: '', phone: '', address: '', note: '' });
   const [submitting, setSubmitting] = useState(false);
@@ -258,7 +259,7 @@ export default function Cart() {
           {/* Total */}
           <div className="flex justify-between items-center">
             <span className="text-sm text-gray-500">Phí vận chuyển</span>
-            <span className="text-sm font-semibold text-primary-600">Miễn phí</span>
+            <span className="text-sm font-semibold text-gray-700">{formatPrice(30000)}</span>
           </div>
           <div className="bg-primary-50 rounded-xl px-4 py-3 flex justify-between items-center">
             <span className="font-bold text-gray-800">Tổng cộng</span>
@@ -376,11 +377,11 @@ export default function Cart() {
             </div>
             <div className="flex justify-between text-sm text-gray-600 mb-3">
               <span>Phí vận chuyển</span>
-              <span className="text-primary-600 font-semibold">Miễn phí</span>
+              <span className="text-gray-700 font-semibold">{formatPrice(SHIPPING_FEE)}</span>
             </div>
             <div className="border-t border-gray-200 pt-3 flex justify-between font-extrabold text-gray-900">
               <span>Tổng cộng</span>
-              <span className="text-primary-700 text-lg">{formatPrice(total)}</span>
+              <span className="text-primary-700 text-lg">{formatPrice(total + SHIPPING_FEE)}</span>
             </div>
           </div>
 

@@ -9,7 +9,8 @@ export default function ordersRouter(db) {
       if (!customer_name || !phone || !address || !items?.length) {
         return res.status(400).json({ error: 'Thiếu thông tin đặt hàng' });
       }
-      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+      const SHIPPING_FEE = 30000;
+      const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0) + SHIPPING_FEE;
 
       const orderId = await db.transaction(async (tx) => {
         const { lastId } = await tx.run(

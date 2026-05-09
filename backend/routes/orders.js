@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import { sendOrderNotification } from '../utils/emailService.js';
 
 export default function ordersRouter(db) {
   const router = Router();
@@ -25,6 +26,10 @@ export default function ordersRouter(db) {
         }
         return lastId;
       });
+
+      // Gửi email thông báo (không chặn response nếu lỗi)
+      sendOrderNotification({ orderId, customer_name, phone, address, note, items, total })
+        .catch((err) => console.error('Lỗi gửi email đơn hàng:', err.message));
 
       res.json({ success: true, orderId, total });
     } catch (err) {
